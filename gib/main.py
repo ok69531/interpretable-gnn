@@ -10,6 +10,7 @@ from train import cross_validation_with_val_set
 from gin import GIBGIN, Discriminator
 
 parser = argparse.ArgumentParser()
+parser.add_argument('--seed', type = int, default = 0)
 parser.add_argument('--dataset', type = str, default = 'MUTAG')
 parser.add_argument('--num_layers', type = int, default = 3)
 parser.add_argument('--hidden', type = int, default = 16)
@@ -32,8 +33,7 @@ def logger(info):
         fold, epoch, val_loss, test_acc))
 
 
-seed = 0
-torch.manual_seed(seed)
+torch.manual_seed(args.seed)
 
 path = '../dataset'
 dataset = TUDataset(path, args.dataset)
