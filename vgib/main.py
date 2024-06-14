@@ -10,7 +10,8 @@ from gin import VariationalGIB, Classifier
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--seed', type = int, default = 0)
+parser.add_argument('--seed', type = int, default = 42)
+parser.add_argument('--split_seed', type = int, default = 12345)
 parser.add_argument('--dataset', type = str, default = 'MUTAG')
 parser.add_argument('--folds', type = int, default = 10)
 parser.add_argument('--epochs', type = int, default = 100)
@@ -41,7 +42,7 @@ parser.add_argument("--cls_hidden_dimensions",
                     help="classifier hidden dims")
 parser.add_argument("--mi_weight",
                     type=float,
-                    default= 0.0001,
+                    default= 0.1,
                     help="classifier hidden dims")
 parser.add_argument("--con_weight",
                     type=float,
@@ -53,7 +54,7 @@ parser.add_argument("--learning_rate",
                 help="Learning rate. Default is 0.01.")
 parser.add_argument("--weight_decay",
                     type=float,
-                    default=0,
+                    default=5*10**-5,
                 help="Adam weight decay. Default is 5*10^-5.")
 args = parser.parse_args([])
 

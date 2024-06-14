@@ -10,13 +10,14 @@ from train import cross_validation_with_val_set
 from gin import GIBGIN, Discriminator
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--seed', type = int, default = 0)
+parser.add_argument('--seed', type = int, default = 42)
+parser.add_argument('--split_seed', type = int, default = 12345)
 parser.add_argument('--dataset', type = str, default = 'MUTAG')
-parser.add_argument('--num_layers', type = int, default = 3)
+parser.add_argument('--num_layers', type = int, default = 2)
 parser.add_argument('--hidden', type = int, default = 16)
 parser.add_argument('--epochs', type = int, default = 100)
 parser.add_argument('--batch_size', type = int, default = 128)
-parser.add_argument('--lr', type = float, default = 0.01)
+parser.add_argument('--lr', type = float, default = 0.001)
 parser.add_argument('--lr_decay_factor', type = float, default = 0.5)
 parser.add_argument('--lr_decay_step_size', type = int, default = 50)
 parser.add_argument('--inner_loop', type = int, default = 50)
