@@ -196,8 +196,8 @@ def cross_validation_with_val_set(dataset, device, args, logger=None):
                 print('NaN')
                 continue
 
-            val_losses.append(evaluate_GC(val_loader, model, criterion)['loss'])
-            accs.append(test_GC(test_loader, model, criterion)[0]['acc'])
+            val_losses.append(evaluate_GC(val_loader, model, device, criterion)['loss'])
+            accs.append(test_GC(test_loader, model, device, criterion)[0]['acc'])
             eval_info = {
                 'fold': fold,
                 'epoch': epoch,
@@ -234,7 +234,7 @@ def cross_validation_with_val_set(dataset, device, args, logger=None):
     return loss_mean, acc_mean, acc_std
 
 
-def evaluate_GC(loader, model, criterion):
+def evaluate_GC(loader, model, device, criterion):
     model.eval()
     
     acc = []
@@ -242,6 +242,7 @@ def evaluate_GC(loader, model, criterion):
     
     with torch.no_grad():
         for batch in loader:
+            batch = batch.to(device)
             logits, probs, _, _, _, _, _, _ = model(batch)
             loss = criterion(logits, batch.y)
             
@@ -257,7 +258,7 @@ def evaluate_GC(loader, model, criterion):
     return eval_state
 
 
-def test_GC(loader, model, criterion):
+def test_GC(loader, model, device, criterion):
     model.eval()
     
     acc = []
@@ -267,6 +268,7 @@ def test_GC(loader, model, criterion):
     
     with torch.no_grad():
         for _, batch in enumerate(loader):
+            batch = batch.to(device)
             logits, probs, active_node_index, _, _, _, _, _ = model(batch)
             loss = criterion(logits, batch.y)
             
