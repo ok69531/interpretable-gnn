@@ -10,8 +10,8 @@ from gin import VariationalGIB, Classifier
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--seed', type = int, default = 42)
-parser.add_argument('--split_seed', type = int, default = 12345)
+parser.add_argument('--seed', type = int, default = 0)
+parser.add_argument('--split_seed', type = int, default = 42)
 parser.add_argument('--dataset', type = str, default = 'MUTAG')
 parser.add_argument('--folds', type = int, default = 10)
 parser.add_argument('--epochs', type = int, default = 100)

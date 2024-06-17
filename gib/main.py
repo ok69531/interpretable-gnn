@@ -10,8 +10,8 @@ from train import cross_validation_with_val_set
 from gin import GIBGIN, Discriminator
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--seed', type = int, default = 42)
-parser.add_argument('--split_seed', type = int, default = 12345)
+parser.add_argument('--seed', type = int, default = 0)
+parser.add_argument('--split_seed', type = int, default = 42)
 parser.add_argument('--dataset', type = str, default = 'MUTAG')
 parser.add_argument('--num_layers', type = int, default = 2)
 parser.add_argument('--hidden', type = int, default = 16)
