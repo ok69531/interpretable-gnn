@@ -173,12 +173,13 @@ def cross_validation_with_val_set(dataset, device, args, logger=None):
                         if data.y == label:
                             count += 1
                             coalition, similarity, prot = mcts(data, model, model.prototype_vectors[i])
+                            model.to(device)
                             if similarity > best_similarity:
                                 best_similarity = similarity
                                 proj_prot = prot
                         
                         if count >= args.count:
-                            model.prototype_vectors.data[i] = proj_prot
+                            model.prototype_vectors.data[i] = proj_prot.to(device)
                             print('Projection of prototype completed')
                             break
 
@@ -186,7 +187,7 @@ def cross_validation_with_val_set(dataset, device, args, logger=None):
                 share = True
                 if args.share: 
                     if model.prototype_vectors.shape[0] > round(output_dim * args.num_prototypes_per_class * (1-args.merge_p)) :  
-                        join_info = join_prototypes_by_activations(model, args.proto_percnetile, train_loader, optimizer)
+                        join_info = join_prototypes_by_activations(model, args.proto_percnetile, train_loader, device)
 
 
             train_loss, _, _ = train(model, optimizer, device, train_loader, criterion, epoch, args)

@@ -107,7 +107,7 @@ def mcts(data, gnnNet, prototype):
     root_coalition = sorted([i for i in range(num_nodes)]) 
     root = MCTSNode(root_coalition, data=data, ori_graph=graph)
     state_map = {str(root.coalition): root} 
-    score_func = partial(gnn_prot_score, data=data, gnnNet=gnnNet, prototype=prototype)
+    score_func = partial(gnn_prot_score, data=data, gnnNet=gnnNet.cpu(), prototype=prototype.cpu())
     for rollout_id in range(mcts_args.rollout):
         mcts_rollout(root, state_map, data, graph, score_func)
 

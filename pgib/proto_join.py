@@ -9,13 +9,13 @@ from Configures import model_args
 
 
 
-def join_prototypes_by_activations(model, p, test_loader, optimizer):
+def join_prototypes_by_activations(model, p, test_loader, device):
  
     for idx, search_batch_input in enumerate(test_loader):
         search_batch = search_batch_input 
 
         with torch.no_grad():
-            search_batch = search_batch.to(model.device)
+            search_batch = search_batch.to(device)
 
             _, _, _, _, _, _, _, min_distance = model.forward(search_batch, merge=True) 
         if idx == 0:
