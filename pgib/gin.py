@@ -176,10 +176,11 @@ class PGIBGIN(nn.Module):
         normalize_new_adj = F.normalize(new_adj, p = 1, dim = 1)
         norm_diag = torch.diag(normalize_new_adj)
 
-        if torch.cuda.is_available():
-            EYE = torch.ones(2).cuda()
-        else:
-            EYE = torch.ones(2)
+        # if torch.cuda.is_available():
+        #     EYE = torch.ones(2).cuda()
+        # else:
+        #     EYE = torch.ones(2)
+        EYE = torch.ones(2).to(edge_index.device)
 
         pos_penalty = self.mse_loss(norm_diag, EYE)
 
