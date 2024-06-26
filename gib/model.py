@@ -4,7 +4,7 @@ import torch
 import torch.nn.functional as F
 import torch.nn as nn
 from torch.nn import Linear, Sequential, ReLU, BatchNorm1d as BN
-from torch_geometric.nn import GINConv, global_mean_pool, JumpingKnowledge
+from torch_geometric.nn import GINConv
 from torch_geometric.utils import to_dense_adj
 
 
@@ -57,10 +57,7 @@ class GIBGIN(nn.Module):
     def aggregate(self, assignment, x, batch, edge_index):
         
         max_id = torch.max(batch)
-        if torch.cuda.is_available():
-            EYE = torch.ones(2).cuda()
-        else:
-            EYE = torch.ones(2)
+        EYE = torch.ones(2).to(edge_index.device)
         
         all_adj = to_dense_adj(edge_index)[0]
 
