@@ -21,7 +21,7 @@ from vgib.model import VariationalGIB, Classifier
 from vgib.train import vgib_train, vgib_eval
 
 
-def gib_main():
+def gib_main(args, device):
     print(f'Model: {args.model}')
     print(f'Dataset: {args.dataset}', '\n')
     
@@ -101,7 +101,7 @@ def gib_main():
     print(f'Test Performance: {np.mean(test_accs):.3f} ({np.std(test_accs):.3f})')
 
 
-def vgib_main():
+def vgib_main(args, device):
     print(f'Model: {args.model}')
     print(f'Dataset: {args.dataset}', '\n')
 
@@ -194,6 +194,6 @@ if __name__ == '__main__':
     print(args)
     
     if args.model == 'GIB':
-        gib_main()
+        gib_main(args, device)
     elif args.model == 'VGIB':
-        vgib_main()
+        vgib_main(args, device)
