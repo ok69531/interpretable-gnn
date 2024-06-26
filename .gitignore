@@ -12,5 +12,4 @@ __pycache__/
 SLURM*
 *.sh
 dataset
-raw
-processed
+tmp.py

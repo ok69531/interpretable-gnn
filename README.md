@@ -9,17 +9,28 @@
 ## Implementation Results
 Backbone model: GIN
 
-<!-- model initialization seed: 42, data split seed: 12345
-| Dataset | GIB | VGIB | GSAT | PGIB |
-| ------- | --- | ---- | ---- | ---- |
-| MUTAG | ${0.792}_{\pm 0.100}$ | ${0.777}_{\pm 0.099}$ | ${}_{\pm }$ | ${}_{\pm }$ |
-| PROTEINS | ${0.700}_{\pm 0.025}$ | ${0.634}_{\pm 0.058}$ | ${}_{\pm }$ | ${}_{\pm }$ | -->
+<!-- PGIB lr for MUTAG: 0.001 \
+PGIB lr for PROTEINS: 0.005 -->
 
-model initialization seed: 0, data split seed: 42
+**Graph Calssification**
 
-PGIB lr for MUTAG: 0.001 \
-PGIB lr for PROTEINS: 0.005
-| Dataset | GIB | VGIB | GSAT | PGIB |
-| ------- | --- | ---- | ---- | ---- |
-| MUTAG | ${0.798}_{\pm 0.102}$ | ${0.765}_{\pm 0.123}$ | ${}_{\pm }$ | ${0.804}_{\pm 0.078}$ |
-| PROTEINS | ${0.700}_{\pm 0.036}$ | ${0.660}_{\pm 0.065}$ | ${}_{\pm }$ | ${0.669}_{\pm 0.049}$ |
+| Dataset  |    GIB     |    VGIB    |   GSAT    |   PGIB    |
+| -------  |     ---    |    ----    |   ----    |   ----    |
+| MUTAG    | ${0.79}_{\pm 0.054}$ | ${0.760}_{\pm 0.044}$ | ${}_{\pm }$ | ${}_{\pm }$ |
+| PROTEINS | ${0.741}_{\pm 0.029}$ | ${0.755}_{\pm 0.027}$ | ${}_{\pm }$ | ${}_{\pm }$ |
+| NCI1     | ${0.702}_{\pm 0.022}$ | ${0.644}_{\pm 0.019}$ | ${}_{\pm }$ | ${}_{\pm }$ |
+| DD       | ${}_{\pm }$ | ${}_{\pm }$ | ${}_{\pm }$ | ${}_{\pm }$ |
+| IMDB-B   | ${}_{\pm }$ | ${}_{\pm }$ | ${}_{\pm }$ | ${}_{\pm }$ |
+| IMDB-M   | ${}_{\pm }$ | ${}_{\pm }$ | ${}_{\pm }$ | ${}_{\pm }$ | 
+
+
+**Graph Interpretation**
+
+| Dataset  |    GIB     |    VGIB    |   GSAT    |   PGIB    |
+| -------  |     ---    |    ----    |   ----    |   ----    |
+| QED | ${}_{\pm }$ | ${}_{\pm }$ | ${}_{\pm }$ | ${}_{\pm }$ |
+| DRD2 | ${}_{\pm }$ | ${}_{\pm }$ | ${}_{\pm }$ | ${}_{\pm }$ |
+| HLM | ${}_{\pm }$ | ${}_{\pm }$ | ${}_{\pm }$ | ${}_{\pm }$ |
+| MLM | ${}_{\pm }$ | ${}_{\pm }$ | ${}_{\pm }$ | ${}_{\pm }$ |
+| RLM | ${}_{\pm }$ | ${}_{\pm }$ | ${}_{\pm }$ | ${}_{\pm }$ |
+
