@@ -26,7 +26,7 @@ def gib_main(args, device):
     print(f'Dataset: {args.dataset}', '\n')
     
     gib_args = load_gib_args()
-    dataset = load_dataset('dataset', args.dataset)
+    dataset = get_dataset('dataset', args.dataset)
 
     path = f'saved_model/{args.model}/{args.dataset}'
     file_name = f'{args.model}_{args.dataset}'
@@ -106,7 +106,7 @@ def vgib_main(args, device):
     print(f'Dataset: {args.dataset}', '\n')
 
     vgib_args = load_vgib_args()
-    dataset = load_dataset('dataset', args.dataset)
+    dataset = get_dataset('dataset', args.dataset)
     
     path = f'saved_model/{args.model}/{args.dataset}'
     file_name = f'{args.model}_{args.dataset}'
