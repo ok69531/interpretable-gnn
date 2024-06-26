@@ -21,20 +21,6 @@ from vgib.model import VariationalGIB, Classifier
 from vgib.train import vgib_train, vgib_eval
 
 
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-
-parser = argparse.ArgumentParser()
-parser.add_argument('--model', type = str, default = 'GIB')
-parser.add_argument('--dataset', type = str, default = 'MUTAG')
-parser.add_argument('--num_runs', type = int, default = 10)
-parser.add_argument('--train_frac', type = float, default = 0.8)
-parser.add_argument('--val_frac', type = float, default = 0.1)
-try:
-    args = parser.parse_args()
-except:
-    args = parser.parse_args([])
-
-
 def gib_main():
     print(f'Model: {args.model}')
     print(f'Dataset: {args.dataset}', '\n')
@@ -192,7 +178,21 @@ def vgib_main():
 
 
 if __name__ == '__main__':
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--model', type = str, default = 'GIB')
+    parser.add_argument('--dataset', type = str, default = 'MUTAG')
+    parser.add_argument('--num_runs', type = int, default = 10)
+    parser.add_argument('--train_frac', type = float, default = 0.8)
+    parser.add_argument('--val_frac', type = float, default = 0.1)
+    try:
+        args = parser.parse_args()
+    except:
+        args = parser.parse_args([])
+
     print(args)
+    
     if args.model == 'GIB':
         gib_main()
     elif args.model == 'VGIB':
