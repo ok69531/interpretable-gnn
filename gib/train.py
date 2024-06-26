@@ -1,11 +1,7 @@
 # https://github.com/Samyu0304/graph-information-bottleneck-for-Subgraph-Recognition/tree/main
 
-import time
 import torch
 import torch.nn.functional as F
-from torch.optim import Adam
-from sklearn.model_selection import StratifiedKFold
-from torch_geometric.data import DataLoader, DenseDataLoader as DenseLoader
 
 
 def gib_train(model, discriminator, optimizer, local_optimizer, device, loader, args):
