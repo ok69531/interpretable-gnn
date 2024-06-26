@@ -8,7 +8,7 @@ from torch.utils.data import random_split
 from torch_geometric.data import DataLoader
 
 from utils import set_seed, save_model
-from dataset import load_dataset
+from load_dataset import get_dataset
 
 # GIB
 from gib.arguments import load_gib_args
