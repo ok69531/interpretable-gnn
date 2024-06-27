@@ -24,10 +24,11 @@ def get_readout_layers(readout):
 
 
 class PGIBGIN(nn.Module):
-    def __init__(self, input_dim, output_dim, args):
+    def __init__(self, input_dim, output_dim, args, cont):
         super(PGIBGIN, self).__init__()
         
         self.args = args
+        self.cont = cont
         self.output_dim = output_dim
         self.latent_dim = args.latent_dim
         self.num_gnn_layers = len(self.latent_dim)
@@ -191,7 +192,7 @@ class PGIBGIN(nn.Module):
         logits = self.last_layer(final_embedding)
         probs = self.softmax(logits)
 
-        if self.args.cont:
+        if self.cont:
             return logits, probs, active_node_index, graph_emb, KL_Loss, pos_penalty, prototype_activations, min_distance
         else:
             for i in range(graph_emb.shape[0]):

@@ -1,15 +1,9 @@
-import os
-import shutil
-import numpy as np
 import torch
-import pdb
-import torch.nn as nn
-import math
-from Configures import model_args
+import numpy as np
+from .Configures import model_args
 
 
-
-def join_prototypes_by_activations(model, p, test_loader, device):
+def join_prototypes_by_activations(model, p, test_loader, device, cont):
  
     for idx, search_batch_input in enumerate(test_loader):
         search_batch = search_batch_input 
@@ -49,7 +43,7 @@ def join_prototypes_by_activations(model, p, test_loader, device):
             model.last_layer.weight.data[:, dist_iterator] = \
                 model.last_layer.weight.data[:, [dist_iterator, *to_join]].sum(1) 
 
-            if model_args.cont == False:
+            if cont == False:
                 # prototype_predictor 
                 dim = model.prototype_predictor.weight.data.shape[1]
                 q_theta = model.prototype_predictor.weight.data.reshape(-1, dim , dim)

@@ -3,17 +3,12 @@ import math
 import torch
 import torch.nn as nn
 import networkx as nx
-import tqdm
-from torch.utils.data import Dataset, DataLoader
-from Configures import mcts_args
 from torch_geometric.data import Data, Batch
 from torch_geometric.utils import to_networkx
 from functools import partial
 from collections import Counter
-from multiprocessing import Pool
-from utils import PlotUtils
-import random
-import pdb
+from .utils import PlotUtils
+from .Configures import mcts_args
 
 
 class MCTSNode():
@@ -163,43 +158,43 @@ def gnn_prot_score(coalition, data, gnnNet, prototype):
     return similarity.item()
 
 
-if __name__ == '__main__':
-    from models import GnnNets, GnnNets_NC
-    from load_dataset import get_dataset, get_dataloader
-    from Configures import data_args, train_args, model_args
-    import numpy as np
+# if __name__ == '__main__':
+#     from models import GnnNets, GnnNets_NC
+#     from load_dataset import get_dataset, get_dataloader
+#     from Configures import data_args, train_args, model_args
+#     import numpy as np
 
 
-    print('start loading data====================')
-    dataset = get_dataset(data_args.dataset_dir, data_args.dataset_name)
-    input_dim = dataset.num_node_features
-    output_dim = int(dataset.num_classes)
-    dataloader = get_dataloader(dataset, train_args.batch_size, data_split_ratio=data_args.data_split_ratio, seed = seed)
-    data_indices = dataloader['train'].dataset.indices
-    print('start training model==================')
-    gnnNets = GnnNets(input_dim, output_dim, model_args)
-    prototype_shape = (output_dim * model_args.num_prototypes_per_class, 128)
-    prototype_vectors = nn.Parameter(torch.rand(prototype_shape),
-                 requires_grad=False).to(model_args.device)
-    checkpoint = torch.load('./checkpoint/' + data_args.dataset_name + '/gin_best.pth')
+#     print('start loading data====================')
+#     dataset = get_dataset(data_args.dataset_dir, data_args.dataset_name)
+#     input_dim = dataset.num_node_features
+#     output_dim = int(dataset.num_classes)
+#     dataloader = get_dataloader(dataset, train_args.batch_size, data_split_ratio=data_args.data_split_ratio, seed = seed)
+#     data_indices = dataloader['train'].dataset.indices
+#     print('start training model==================')
+#     gnnNets = GnnNets(input_dim, output_dim, model_args)
+#     prototype_shape = (output_dim * model_args.num_prototypes_per_class, 128)
+#     prototype_vectors = nn.Parameter(torch.rand(prototype_shape),
+#                  requires_grad=False).to(model_args.device)
+#     checkpoint = torch.load('./checkpoint/' + data_args.dataset_name + '/gin_best.pth')
 
-    gnnNets.update_state_dict(checkpoint['net']) 
-    gnnNets.to_device()
-    gnnNets.eval()
+#     gnnNets.update_state_dict(checkpoint['net']) 
+#     gnnNets.to_device()
+#     gnnNets.eval()
 
-    save_dir = os.path.join('./results',
-                            f"{mcts_args.dataset_name}_"
-                            f"{model_args.model_name}_")
-    if not os.path.isdir(save_dir):
-        os.mkdir(save_dir)
-    plotutils = PlotUtils(dataset_name=data_args.dataset_name)
+#     save_dir = os.path.join('./results',
+#                             f"{mcts_args.dataset_name}_"
+#                             f"{model_args.model_name}_")
+#     if not os.path.isdir(save_dir):
+#         os.mkdir(save_dir)
+#     plotutils = PlotUtils(dataset_name=data_args.dataset_name)
 
-    batch_indices = np.random.choice(data_indices, 64, replace=False)
-    for i in batch_indices:
-        data = dataset[i.item()]
-        for j in range(10):
-            coalition, _, _ = mcts(data, gnnNets, prototype_vectors[j])
-            print(coalition)
-            graph = to_networkx(data, to_undirected=True)
-            plotutils.plot(graph, coalition, x=data.x,
-                           figname=os.path.join(save_dir, f"example_{i*10+j}.png"))
+#     batch_indices = np.random.choice(data_indices, 64, replace=False)
+#     for i in batch_indices:
+#         data = dataset[i.item()]
+#         for j in range(10):
+#             coalition, _, _ = mcts(data, gnnNets, prototype_vectors[j])
+#             print(coalition)
+#             graph = to_networkx(data, to_undirected=True)
+#             plotutils.plot(graph, coalition, x=data.x,
+#                            figname=os.path.join(save_dir, f"example_{i*10+j}.png"))
