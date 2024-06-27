@@ -12,4 +12,5 @@ __pycache__/
 SLURM*
 *.sh
 dataset
+saved_model
 tmp.py
