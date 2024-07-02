@@ -382,6 +382,7 @@ def pgib_main(args, device):
 
 if __name__ == '__main__':
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    print(f'Cuda Available: {torch.cuda.is_available()}, {device}')
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--model', type = str, default = 'GIB')
