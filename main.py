@@ -6,7 +6,7 @@ import torch
 import torch.backends
 from torch.optim import Adam
 from torch.utils.data import random_split
-from torch_geometric.data import DataLoader
+from torch_geometric.loader import DataLoader
 
 from module.utils import set_seed, save_model
 from module.load_dataset import get_dataset
@@ -337,6 +337,11 @@ def pgib_main(args, device):
                         join_info = join_prototypes_by_activations(pgib, pgib_args.proto_percnetile, train_loader, device, cont = args.pgib_cont)
 
             train_loss, _, _ = pgib_train(pgib, optimizer, device, train_loader, criterion, epoch, pgib_args, cont = args.pgib_cont)
+            
+            if train_loss != train_loss:
+                print('Train loss is NaN.')
+                break
+            
             val_eval_dict = pgib_evaluate_GC(val_loader, pgib, device, criterion)
             val_loss, val_acc = val_eval_dict['loss'], val_eval_dict['acc']
             test_eval_dict = pgib_test_GC(test_loader, pgib, device, criterion)[0]
