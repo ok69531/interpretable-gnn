@@ -39,7 +39,8 @@ logging.basicConfig(format='', level=logging.INFO)
 
 def gib_main(args, device):
     logging.info(f'Model: {args.model}')
-    logging.info(f'Dataset: {args.dataset}', '\n')
+    logging.info(f'Dataset: {args.dataset}')
+    logging.info('')
     
     gib_args = load_gib_args()
     dataset = get_dataset('dataset', args.dataset)
@@ -90,8 +91,8 @@ def gib_main(args, device):
                 gib_disc_optim_params = deepcopy(optimizer_local.state_dict())
             
             logging.info(f'=== epoch: {epoch}')
-            logging.info(f'Train loss: {train_loss:.5f} | ', \
-                f'Validation loss: {val_loss:.5f}, Acc: {val_acc:.5f} | ', \
+            logging.info(f'Train loss: {train_loss:.5f} | '
+                f'Validation loss: {val_loss:.5f}, Acc: {val_acc:.5f} | '
                 f'Test loss: {test_loss:.5f}, Acc: {test_acc:.5f}')
         
         val_losses.append(best_val_loss)
@@ -119,7 +120,8 @@ def gib_main(args, device):
 
 def vgib_main(args, device):
     logging.info(f'Model: {args.model}')
-    logging.info(f'Dataset: {args.dataset}', '\n')
+    logging.info(f'Dataset: {args.dataset}')
+    logging.info('')
 
     vgib_args = load_vgib_args()
     dataset = get_dataset('dataset', args.dataset)
@@ -168,8 +170,8 @@ def vgib_main(args, device):
                 vgib_optim_params = deepcopy(optimizer.state_dict())
             
             logging.info(f'=== epoch: {epoch}')
-            logging.info(f'Train loss: {train_loss:.5f} | ', \
-                f'Validation loss: {val_loss:.5f}, Acc: {val_acc:.5f} | ', \
+            logging.info(f'Train loss: {train_loss:.5f} | ', 
+                f'Validation loss: {val_loss:.5f}, Acc: {val_acc:.5f} | ', 
                 f'Test loss: {test_loss:.5f}, Acc: {test_acc:.5f}')
         
         val_losses.append(best_val_loss)
@@ -195,7 +197,8 @@ def vgib_main(args, device):
 
 def gsat_main(args, device):
     logging.info(f'Model: {args.model}')
-    logging.info(f'Dataset: {args.dataset}', '\n')
+    logging.info(f'Dataset: {args.dataset}')
+    logging.info('')
 
     gsat_args = load_gsat_args()
     if args.dataset == 'SMotif':
@@ -249,8 +252,8 @@ def gsat_main(args, device):
                 gsat_optim_params = deepcopy(gsat.optimizer.state_dict())
             
             logging.info(f'=== epoch: {epoch}')
-            logging.info(f'Train loss: {train_loss:.5f} | ', \
-                f'Validation loss: {val_loss:.5f}, Acc: {val_acc:.5f} | ', \
+            logging.info(f'Train loss: {train_loss:.5f} | ', 
+                f'Validation loss: {val_loss:.5f}, Acc: {val_acc:.5f} | ', 
                 f'Test loss: {test_loss:.5f}, Acc: {test_acc:.5f}')
         
         val_losses.append(best_val_loss)
@@ -274,7 +277,8 @@ def gsat_main(args, device):
 
 def pgib_main(args, device):
     logging.info(f'Model: {args.model}')
-    logging.info(f'Dataset: {args.dataset}', '\n')
+    logging.info(f'Dataset: {args.dataset}')
+    logging.info('')
 
     pgib_args = load_pgib_args()
     dataset = get_dataset('dataset', args.dataset)
@@ -360,8 +364,8 @@ def pgib_main(args, device):
                 pgib_optim_params = deepcopy(optimizer.state_dict())
             
             logging.info(f'=== epoch: {epoch}')
-            logging.info(f'Train loss: {train_loss:.5f} | ', \
-                f'Validation loss: {val_loss:.5f}, Acc: {val_acc:.5f} | ', \
+            logging.info(f'Train loss: {train_loss:.5f} | ', 
+                f'Validation loss: {val_loss:.5f}, Acc: {val_acc:.5f} | ', 
                 f'Test loss: {test_loss:.5f}, Acc: {test_acc:.5f}')
         
         val_losses.append(best_val_loss)
