@@ -91,7 +91,7 @@ def gib_main(args, device):
                 gib_disc_optim_params = deepcopy(optimizer_local.state_dict())
             
             logging.info('=== epoch: {}'.format(epoch))
-            logging.info('Train loss: {0:.5f} | Validation loss: {0:.5f}, Acc: {0:.5f} | Test loss: {0:.5f}, Acc: {0:.5f}'.format(train_loss, val_loss, val_acc, test_loss, test_acc))
+            logging.info('Train loss: {:.5f} | Validation loss: {:.5f}, Acc: {:.5f} | Test loss: {:.5f}, Acc: {:.5f}'.format(train_loss, val_loss, val_acc, test_loss, test_acc))
         
         val_losses.append(best_val_loss)
         val_accs.append(best_val_acc)
@@ -113,7 +113,7 @@ def gib_main(args, device):
     save_model(checkpoints, path, file_name)
     
     logging.info('')
-    logging.info('Test Performance: {0:.3f} ({0:.3f})'.format(np.mean(test_accs), np.std(test_accs)))
+    logging.info('Test Performance: {:.3f} ({:.3f})'.format(np.mean(test_accs), np.std(test_accs)))
 
 
 def vgib_main(args, device):
@@ -168,7 +168,7 @@ def vgib_main(args, device):
                 vgib_optim_params = deepcopy(optimizer.state_dict())
             
             logging.info('=== epoch: {}'.format(epoch))
-            logging.info('Train loss: {0:.5f} | Validation loss: {0:.5f}, Acc: {0:.5f} | Test loss: {0:.5f}, Acc: {0:.5f}'.format(train_loss, val_loss, val_acc, test_loss, test_acc))
+            logging.info('Train loss: {:.5f} | Validation loss: {:.5f}, Acc: {:.5f} | Test loss: {:.5f}, Acc: {:.5f}'.format(train_loss, val_loss, val_acc, test_loss, test_acc))
         
         val_losses.append(best_val_loss)
         val_accs.append(best_val_acc)
@@ -188,7 +188,7 @@ def vgib_main(args, device):
     save_model(checkpoints, path, file_name)
 
     logging.info('')
-    logging.info('Test Performance: {0:.3f} ({0:.3f})'.format(np.mean(test_accs), np.std(test_accs)))
+    logging.info('Test Performance: {:.3f} ({:.3f})'.format(np.mean(test_accs), np.std(test_accs)))
 
 
 def gsat_main(args, device):
@@ -248,7 +248,7 @@ def gsat_main(args, device):
                 gsat_optim_params = deepcopy(gsat.optimizer.state_dict())
             
             logging.info('=== epoch: {}'.format(epoch))
-            logging.info('Train loss: {0:.5f} | Validation loss: {0:.5f}, Acc: {0:.5f} | Test loss: {0:.5f}, Acc: {0:.5f}'.format(train_loss, val_loss, val_acc, test_loss, test_acc))
+            logging.info('Train loss: {:.5f} | Validation loss: {:.5f}, Acc: {:.5f} | Test loss: {:.5f}, Acc: {:.5f}'.format(train_loss, val_loss, val_acc, test_loss, test_acc))
         
         val_losses.append(best_val_loss)
         val_accs.append(best_val_acc)
@@ -266,7 +266,7 @@ def gsat_main(args, device):
     save_model(checkpoints, path, file_name)
 
     logging.info('')
-    logging.info('Test Performance: {0:.3f} ({0:.3f})'.format(np.mean(test_accs), np.std(test_accs)))
+    logging.info('Test Performance: {:.3f} ({:.3f})'.format(np.mean(test_accs), np.std(test_accs)))
 
 
 def pgib_main(args, device):
@@ -358,7 +358,7 @@ def pgib_main(args, device):
                 pgib_optim_params = deepcopy(optimizer.state_dict())
             
             logging.info('=== epoch: {}'.format(epoch))
-            logging.info('Train loss: {0:.5f} | Validation loss: {0:.5f}, Acc: {0:.5f} | Test loss: {0:.5f}, Acc: {0:.5f}'.format(train_loss, val_loss, val_acc, test_loss, test_acc))
+            logging.info('Train loss: {:.5f} | Validation loss: {:.5f}, Acc: {:.5f} | Test loss: {:.5f}, Acc: {:.5f}'.format(train_loss, val_loss, val_acc, test_loss, test_acc))
         
         val_losses.append(best_val_loss)
         val_accs.append(best_val_acc)
@@ -376,7 +376,7 @@ def pgib_main(args, device):
     save_model(checkpoints, path, file_name)
 
     logging.info('')
-    logging.info('Test Performance: {0:.3f} ({0:.3f})'.format(np.mean(test_accs), np.std(test_accs)))
+    logging.info('Test Performance: {:.3f} ({:.3f})'.format(np.mean(test_accs), np.std(test_accs)))
 
 
 if __name__ == '__main__':
