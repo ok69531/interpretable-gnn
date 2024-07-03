@@ -1,3 +1,4 @@
+import logging
 import argparse
 import numpy as np
 from copy import deepcopy
@@ -34,9 +35,11 @@ from pgib.my_mcts import mcts
 from pgib.proto_join import join_prototypes_by_activations
 
 
+logging.basicConfig(format='', level=logging.INFO)
+
 def gib_main(args, device):
-    print(f'Model: {args.model}')
-    print(f'Dataset: {args.dataset}', '\n')
+    logging.info(f'Model: {args.model}')
+    logging.info(f'Dataset: {args.dataset}', '\n')
     
     gib_args = load_gib_args()
     dataset = get_dataset('dataset', args.dataset)
@@ -50,7 +53,7 @@ def gib_main(args, device):
     gib_optim_params_list, gib_disc_optim_params_list = [], []
     
     for seed in range(args.num_runs):
-        print(f'======================= Run: {seed} =================')
+        logging.info(f'======================= Run: {seed} =================')
         set_seed(seed)    
         
         num_train = int(len(dataset) * args.train_frac)
@@ -86,8 +89,8 @@ def gib_main(args, device):
                 gib_optim_params = deepcopy(optimizer.state_dict())
                 gib_disc_optim_params = deepcopy(optimizer_local.state_dict())
             
-            print(f'=== epoch: {epoch}')
-            print(f'Train loss: {train_loss:.5f} | ', \
+            logging.info(f'=== epoch: {epoch}')
+            logging.info(f'Train loss: {train_loss:.5f} | ', \
                 f'Validation loss: {val_loss:.5f}, Acc: {val_acc:.5f} | ', \
                 f'Test loss: {test_loss:.5f}, Acc: {test_acc:.5f}')
         
@@ -110,13 +113,13 @@ def gib_main(args, device):
     }
     save_model(checkpoints, path, file_name)
     
-    print('')
-    print(f'Test Performance: {np.mean(test_accs):.3f} ({np.std(test_accs):.3f})')
+    logging.info('')
+    logging.info(f'Test Performance: {np.mean(test_accs):.3f} ({np.std(test_accs):.3f})')
 
 
 def vgib_main(args, device):
-    print(f'Model: {args.model}')
-    print(f'Dataset: {args.dataset}', '\n')
+    logging.info(f'Model: {args.model}')
+    logging.info(f'Dataset: {args.dataset}', '\n')
 
     vgib_args = load_vgib_args()
     dataset = get_dataset('dataset', args.dataset)
@@ -130,7 +133,7 @@ def vgib_main(args, device):
     vgib_optim_params_list = []
     
     for seed in range(args.num_runs):
-        print(f'======================= Run: {seed} =================')
+        logging.info(f'======================= Run: {seed} =================')
         set_seed(seed)    
         
         num_train = int(len(dataset) * args.train_frac)
@@ -164,8 +167,8 @@ def vgib_main(args, device):
                 vgib_cls_params = deepcopy(vgib_classifier.state_dict())
                 vgib_optim_params = deepcopy(optimizer.state_dict())
             
-            print(f'=== epoch: {epoch}')
-            print(f'Train loss: {train_loss:.5f} | ', \
+            logging.info(f'=== epoch: {epoch}')
+            logging.info(f'Train loss: {train_loss:.5f} | ', \
                 f'Validation loss: {val_loss:.5f}, Acc: {val_acc:.5f} | ', \
                 f'Test loss: {test_loss:.5f}, Acc: {test_acc:.5f}')
         
@@ -186,13 +189,13 @@ def vgib_main(args, device):
     }
     save_model(checkpoints, path, file_name)
 
-    print('')
-    print(f'Test Performance: {np.mean(test_accs):.3f} ({np.std(test_accs):.3f})')
+    logging.info('')
+    logging.info(f'Test Performance: {np.mean(test_accs):.3f} ({np.std(test_accs):.3f})')
 
 
 def gsat_main(args, device):
-    print(f'Model: {args.model}')
-    print(f'Dataset: {args.dataset}', '\n')
+    logging.info(f'Model: {args.model}')
+    logging.info(f'Dataset: {args.dataset}', '\n')
 
     gsat_args = load_gsat_args()
     if args.dataset == 'SMotif':
@@ -210,7 +213,7 @@ def gsat_main(args, device):
     gsat_optim_params_list = []
     
     for seed in range(args.num_runs):
-        print(f'======================= Run: {seed} =================')
+        logging.info(f'======================= Run: {seed} =================')
         set_seed(seed)    
         
         num_train = int(len(dataset) * args.train_frac)
@@ -245,8 +248,8 @@ def gsat_main(args, device):
                 gsat_params = deepcopy(gsat.state_dict())
                 gsat_optim_params = deepcopy(gsat.optimizer.state_dict())
             
-            print(f'=== epoch: {epoch}')
-            print(f'Train loss: {train_loss:.5f} | ', \
+            logging.info(f'=== epoch: {epoch}')
+            logging.info(f'Train loss: {train_loss:.5f} | ', \
                 f'Validation loss: {val_loss:.5f}, Acc: {val_acc:.5f} | ', \
                 f'Test loss: {test_loss:.5f}, Acc: {test_acc:.5f}')
         
@@ -265,13 +268,13 @@ def gsat_main(args, device):
     }
     save_model(checkpoints, path, file_name)
 
-    print('')
-    print(f'Test Performance: {np.mean(test_accs):.3f} ({np.std(test_accs):.3f})')
+    logging.info('')
+    logging.info(f'Test Performance: {np.mean(test_accs):.3f} ({np.std(test_accs):.3f})')
 
 
 def pgib_main(args, device):
-    print(f'Model: {args.model}')
-    print(f'Dataset: {args.dataset}', '\n')
+    logging.info(f'Model: {args.model}')
+    logging.info(f'Dataset: {args.dataset}', '\n')
 
     pgib_args = load_pgib_args()
     dataset = get_dataset('dataset', args.dataset)
@@ -285,7 +288,7 @@ def pgib_main(args, device):
     pgib_optim_params_list = []
     
     for seed in range(args.num_runs):
-        print(f'======================= Run: {seed} =================')
+        logging.info(f'======================= Run: {seed} =================')
         set_seed(seed)    
         
         num_train = int(len(dataset) * args.train_frac)
@@ -327,7 +330,7 @@ def pgib_main(args, device):
                         
                         if count >= pgib_args.count:
                             pgib.prototype_vectors.data[i] = proj_prot.to(device)
-                            print('Projection of prototype completed')
+                            logging.info('Projection of prototype completed')
                             break
 
                 # prototype merge
@@ -339,7 +342,7 @@ def pgib_main(args, device):
             train_loss, _, _ = pgib_train(pgib, optimizer, device, train_loader, criterion, epoch, pgib_args, cont = args.pgib_cont)
             
             if train_loss != train_loss:
-                print('Train loss is NaN.')
+                logging.info('Train loss is NaN.')
                 break
             
             val_eval_dict = pgib_evaluate_GC(val_loader, pgib, device, criterion)
@@ -356,8 +359,8 @@ def pgib_main(args, device):
                 pgib_params = deepcopy(pgib.state_dict())
                 pgib_optim_params = deepcopy(optimizer.state_dict())
             
-            print(f'=== epoch: {epoch}')
-            print(f'Train loss: {train_loss:.5f} | ', \
+            logging.info(f'=== epoch: {epoch}')
+            logging.info(f'Train loss: {train_loss:.5f} | ', \
                 f'Validation loss: {val_loss:.5f}, Acc: {val_acc:.5f} | ', \
                 f'Test loss: {test_loss:.5f}, Acc: {test_acc:.5f}')
         
@@ -376,13 +379,13 @@ def pgib_main(args, device):
     }
     save_model(checkpoints, path, file_name)
 
-    print('')
-    print(f'Test Performance: {np.mean(test_accs):.3f} ({np.std(test_accs):.3f})')
+    logging.info('')
+    logging.info(f'Test Performance: {np.mean(test_accs):.3f} ({np.std(test_accs):.3f})')
 
 
 if __name__ == '__main__':
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    print(f'Cuda Available: {torch.cuda.is_available()}, {device}')
+    logging.info(f'Cuda Available: {torch.cuda.is_available()}, {device}')
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--model', type = str, default = 'GIB')
@@ -396,7 +399,7 @@ if __name__ == '__main__':
     except:
         args = parser.parse_args([])
 
-    print(args)
+    logging.info(args)
     
     if args.model == 'GIB':
         gib_main(args, device)

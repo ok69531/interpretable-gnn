@@ -29,9 +29,9 @@ class GIN(nn.Module):
         self.convs.append(
         GINConv(
             nn.Sequential(
-                nn.Linear(input_dim, self.hidden_size, bias = False),
+                nn.Linear(input_dim, self.hidden_size),
                 nn.ReLU(),
-                nn.Linear(self.hidden_size, self.hidden_size, bias = False),
+                nn.Linear(self.hidden_size, self.hidden_size),
                 nn.ReLU(),
                 nn.BatchNorm1d(self.hidden_size)
             ), train_eps = False
@@ -42,9 +42,9 @@ class GIN(nn.Module):
             self.convs.append(
                 GINConv(
                     nn.Sequential(
-                        nn.Linear(self.hidden_size, self.hidden_size, bias = False),
+                        nn.Linear(self.hidden_size, self.hidden_size),
                         nn.ReLU(),
-                        nn.Linear(self.hidden_size, self.hidden_size, bias = False),
+                        nn.Linear(self.hidden_size, self.hidden_size),
                         nn.ReLU(),
                         nn.BatchNorm1d(self.hidden_size)
                     ), train_eps = False

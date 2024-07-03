@@ -12,7 +12,6 @@ def load_pgib_args():
     parser.add_argument('--epochs', type = int, default = 300)
     parser.add_argument('--num_prototypes_per_class', type = int, default = 7)
     parser.add_argument('--readout', type = str, default = 'sum')
-    parser.add_argument('--cont', type = bool, default = True)
     parser.add_argument('--lr', type = float, default = 0.001)
     parser.add_argument('--weight_decay', type = float, default = 0)
     parser.add_argument('--beta', type = float, default = 0.1)
