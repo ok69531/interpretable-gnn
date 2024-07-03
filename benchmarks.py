@@ -287,7 +287,7 @@ def pgib_main(args, device):
     
     for seed in range(args.num_runs):
         if args.dataset == 'DD' and args.pgib_cont == True:
-            seed += 1
+            seed += 2
         logging.info(f'======================= Run: {seed} =================')
         set_seed(seed)
         
