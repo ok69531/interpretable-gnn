@@ -1,4 +1,6 @@
 import torch
+from torch import Tensor
+
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.optim import Adam
@@ -6,11 +8,33 @@ from torch.optim import Adam
 from torch_sparse import transpose
 
 from torch_geometric.utils import sort_edge_index, is_undirected
-from torch_geometric.nn import GINConv, global_add_pool, InstanceNorm
+from torch_geometric.nn import GINConv as BaseGINConv
+from torch_geometric.nn import global_add_pool, InstanceNorm
+from torch_geometric.typing import OptPairTensor, OptTensor
 
 import numpy as np
 from tqdm import tqdm
 from sklearn.metrics import roc_auc_score
+
+
+class GINConv(BaseGINConv):
+    def forward(self, x, edge_index, edge_attr = None, edge_atten = None, size = None):
+        if isinstance(x, Tensor):
+            x: OptPairTensor = (x, x)
+        
+        out = self.propagate(edge_index, x=x, edge_atten=edge_atten, size=size)
+
+        x_r = x[1]
+        if x_r is not None:
+            out += (1 + self.eps) * x_r
+
+        return self.nn(out)
+
+    def message(self, x_j: Tensor, edge_atten: OptTensor = None) -> Tensor:
+        if edge_atten is not None:
+            return x_j * edge_atten
+        else:
+            return x_j
 
 
 class GIN(nn.Module):
@@ -26,58 +50,44 @@ class GIN(nn.Module):
         self.n_layers = args.n_layers
         self.multi_label = args.multi_label
 
-        self.convs.append(
-        GINConv(
-            nn.Sequential(
-                nn.Linear(input_dim, self.hidden_size),
-                nn.ReLU(),
-                nn.Linear(self.hidden_size, self.hidden_size),
-                nn.ReLU(),
-                nn.BatchNorm1d(self.hidden_size)
-            ), train_eps = False
-        )
-        )
-
-        for i in range(self.n_layers - 1):
-            self.convs.append(
-                GINConv(
-                    nn.Sequential(
-                        nn.Linear(self.hidden_size, self.hidden_size),
-                        nn.ReLU(),
-                        nn.Linear(self.hidden_size, self.hidden_size),
-                        nn.ReLU(),
-                        nn.BatchNorm1d(self.hidden_size)
-                    ), train_eps = False
-                )
-            )
+        self.node_encoder = nn.Linear(input_dim, self.hidden_size)
+        
+        for _ in range(self.n_layers):
+            self.convs.append(GINConv(GIN.MLP(self.hidden_size, self.hidden_size)))
 
         self.fc_out = nn.Sequential(
             nn.Linear(self.hidden_size, 1 if num_class == 2 and not self.multi_label else num_class)
         )
     
-    def forward(self, data):
-        h = self.convs[0](data.x, data.edge_index)
-        h = self.relu(h)
-        h = F.dropout(h, p = self.dropout_p, training = self.training)
+    @staticmethod
+    def MLP(in_channels: int, out_channels: int):
+        return nn.Sequential(
+            nn.Linear(in_channels, out_channels),
+            nn.ReLU(),
+            nn.Linear(out_channels, out_channels),
+            nn.ReLU(),
+            nn.BatchNorm1d(out_channels)
+        )
+    
+    def forward(self, data, edge_atten = None):
+        x = self.node_encoder(data.x)
         
-        for conv in self.convs[1:]:
-            h = conv(h, data.edge_index)
-            h = self.relu(h)
-            h = F.dropout(h, p = self.dropout_p, training = self.training)
+        for conv in self.convs:
+            x = conv(x, data.edge_index, edge_atten = edge_atten)
+            x = self.relu(x)
+            x = F.dropout(x, p = self.dropout_p, training = self.training)
         
-        return self.fc_out(self.pool(h, data.batch))
+        return self.fc_out(self.pool(x, data.batch))
     
     def get_emb(self, data):
-        h = self.convs[0](data.x, data.edge_index)
-        h = self.relu(h)
-        h = F.dropout(h, p = self.dropout_p, training = self.training)
+        x = self.node_encoder(data.x)
         
-        for conv in self.convs[1:]:
-            h = conv(h, data.edge_index)
-            h = self.relu(h)
-            h = F.dropout(h, p = self.dropout_p, training = self.training)
+        for conv in self.convs:
+            x = conv(x, data.edge_index)
+            x = self.relu(x)
+            x = F.dropout(x, p = self.dropout_p, training = self.training)
         
-        return h
+        return x
     
     def get_pred_from_emb(self, emb, batch):
         return self.fc_out(self.pool(emb, batch))
@@ -223,7 +233,7 @@ class GSAT(nn.Module):
         else:
             edge_att = self.lift_node_att_to_edge_att(att, data.edge_index)
 
-        clf_logits = self.clf(data)
+        clf_logits = self.clf(data, edge_atten = edge_att)
         if self.num_class > 2:
             loss, loss_dict = self.__loss__(att, clf_logits, data.y, epoch)
         else:
