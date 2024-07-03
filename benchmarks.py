@@ -286,8 +286,10 @@ def pgib_main(args, device):
     pgib_optim_params_list = []
     
     for seed in range(args.num_runs):
+        if args.dataset == 'DD' and args.pgib_cont == True:
+            seed += 1
         logging.info(f'======================= Run: {seed} =================')
-        set_seed(seed)    
+        set_seed(seed)
         
         num_train = int(len(dataset) * args.train_frac)
         num_val = int(len(dataset) * args.val_frac)
