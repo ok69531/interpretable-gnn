@@ -71,7 +71,7 @@ def gib_main(args, device):
         num_val = int(len(dataset) * args.val_frac)
         num_test = len(dataset) - num_train - num_val
         
-        train, val, test = random_split(dataset, lengths = [num_train, num_val, num_test], generator=torch.Generator())
+        train, val, test = random_split(dataset, lengths = [num_train, num_val, num_test], generator=torch.Generator().manual_seed(seed))
         train_loader = DataLoader(train, batch_size = 128, shuffle = True)
         val_loader = DataLoader(val, batch_size = 128, shuffle = False)
         test_loader = DataLoader(test, batch_size = 128, shuffle = False)
@@ -160,7 +160,7 @@ def vgib_main(args, device):
         num_val = int(len(dataset) * args.val_frac)
         num_test = len(dataset) - num_train - num_val
         
-        train, val, test = random_split(dataset, lengths = [num_train, num_val, num_test], generator=torch.Generator())
+        train, val, test = random_split(dataset, lengths = [num_train, num_val, num_test], generator=torch.Generator().manual_seed(seed))
         train_loader = DataLoader(train, batch_size = 128, shuffle = True)
         val_loader = DataLoader(val, batch_size = 128, shuffle = False)
         test_loader = DataLoader(test, batch_size = 128, shuffle = False)
@@ -249,7 +249,7 @@ def gsat_main(args, device):
         num_val = int(len(dataset) * args.val_frac)
         num_test = len(dataset) - num_train - num_val
         
-        train, val, test = random_split(dataset, lengths = [num_train, num_val, num_test], generator=torch.Generator())
+        train, val, test = random_split(dataset, lengths = [num_train, num_val, num_test], generator=torch.Generator().manual_seed(seed))
         train_loader = DataLoader(train, batch_size = 128, shuffle = True)
         val_loader = DataLoader(val, batch_size = 128, shuffle = False)
         test_loader = DataLoader(test, batch_size = 128, shuffle = False)
@@ -335,7 +335,7 @@ def pgib_main(args, device):
         num_val = int(len(dataset) * args.val_frac)
         num_test = len(dataset) - num_train - num_val
         
-        train, val, test = random_split(dataset, lengths = [num_train, num_val, num_test], generator=torch.Generator())
+        train, val, test = random_split(dataset, lengths = [num_train, num_val, num_test], generator=torch.Generator().manual_seed(seed))
         train_loader = DataLoader(train, batch_size = 128, shuffle = True)
         val_loader = DataLoader(val, batch_size = 128, shuffle = False)
         test_loader = DataLoader(test, batch_size = 128, shuffle = False)
