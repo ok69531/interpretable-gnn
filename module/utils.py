@@ -17,6 +17,12 @@ def set_seed(seed):
     torch_geometric.seed_everything(seed)
 
 
+def worker_init_fn(worker_id):
+    seed = torch.initial_seed() % 2**32
+    np.random.seed(seed)
+    random.seed(seed)
+
+
 def save_model(file, path, name):
     if os.path.isdir(path):
         pass
@@ -24,4 +30,3 @@ def save_model(file, path, name):
         os.makedirs(path)
     torch.save(file, os.path.join(path, name))
     print('Parameters are successfully saved.')
-    
