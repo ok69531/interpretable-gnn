@@ -425,7 +425,7 @@ if __name__ == '__main__':
     logging.info(f'Cuda Available: {torch.cuda.is_available()}, {device}')
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--model', type = str, default = 'GIB')
+    parser.add_argument('--model', type = str, default = 'GIB', help = 'GIB, VGIB, GSAT, and PGIB')
     parser.add_argument('--dataset', type = str, default = 'MUTAG')
     parser.add_argument('--num_runs', type = int, default = 10)
     parser.add_argument('--train_frac', type = float, default = 0.8)
