@@ -123,7 +123,7 @@ def gib_main(args, device):
     save_model(checkpoints, path, file_name)
     
     logging.info('')
-    logging.info('Test Performance: {:.3f} ({:.3f})'.format(np.mean(test_accs), np.std(test_accs)))
+    logging.info('Test Performance: {:.2f} ({:.2f})'.format(np.mean(test_accs)*100, np.std(test_accs)*100))
 
 
 def vgib_main(args, device):
@@ -208,7 +208,7 @@ def vgib_main(args, device):
     save_model(checkpoints, path, file_name)
 
     logging.info('')
-    logging.info('Test Performance: {:.3f} ({:.3f})'.format(np.mean(test_accs), np.std(test_accs)))
+    logging.info('Test Performance: {:.2f} ({:.2f})'.format(np.mean(test_accs)*100, np.std(test_accs)*100))
 
 
 def gsat_main(args, device):
@@ -296,7 +296,7 @@ def gsat_main(args, device):
     save_model(checkpoints, path, file_name)
 
     logging.info('')
-    logging.info('Test Performance: {:.3f} ({:.3f})'.format(np.mean(test_accs), np.std(test_accs)))
+    logging.info('Test Performance: {:.2f} ({:.2f})'.format(np.mean(test_accs)*100, np.std(test_accs)*100))
 
 
 def pgib_main(args, device):
@@ -417,7 +417,7 @@ def pgib_main(args, device):
     save_model(checkpoints, path, file_name)
 
     logging.info('')
-    logging.info('Test Performance: {:.3f} ({:.3f})'.format(np.mean(test_accs), np.std(test_accs)))
+    logging.info('Test Performance: {:.2f} ({:.2f})'.format(np.mean(test_accs)*100, np.std(test_accs)*100))
 
 
 if __name__ == '__main__':
