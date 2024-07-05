@@ -45,6 +45,16 @@ def gib_main(args, device):
     gib_args = load_gib_args()
     dataset = get_dataset('dataset', args.dataset)
 
+    avg_nodes = 0.0
+    avg_edge_index = 0.0
+    for i in range(len(dataset)):
+        avg_nodes += dataset[i].x.shape[0]
+        avg_edge_index += dataset[i].edge_index.shape[1]
+
+    avg_nodes /= len(dataset)
+    avg_edge_index /= len(dataset)
+    logging.info('graphs {}, avg_nodes {:.4f}, avg_edge_index {:.4f}'.format(len(dataset), avg_nodes, avg_edge_index/2))
+
     path = f'saved_model/{args.model}/{args.dataset}'
     file_name = f'{args.model}_{args.dataset}'
     
@@ -123,6 +133,16 @@ def vgib_main(args, device):
 
     vgib_args = load_vgib_args()
     dataset = get_dataset('dataset', args.dataset)
+    
+    avg_nodes = 0.0
+    avg_edge_index = 0.0
+    for i in range(len(dataset)):
+        avg_nodes += dataset[i].x.shape[0]
+        avg_edge_index += dataset[i].edge_index.shape[1]
+
+    avg_nodes /= len(dataset)
+    avg_edge_index /= len(dataset)
+    logging.info('graphs {}, avg_nodes {:.4f}, avg_edge_index {:.4f}'.format(len(dataset), avg_nodes, avg_edge_index/2))
     
     path = f'saved_model/{args.model}/{args.dataset}'
     file_name = f'{args.model}_{args.dataset}'
@@ -203,6 +223,16 @@ def gsat_main(args, device):
         gsat_args.final_r = 0.7
     dataset = get_dataset('dataset', args.dataset)
     
+    avg_nodes = 0.0
+    avg_edge_index = 0.0
+    for i in range(len(dataset)):
+        avg_nodes += dataset[i].x.shape[0]
+        avg_edge_index += dataset[i].edge_index.shape[1]
+
+    avg_nodes /= len(dataset)
+    avg_edge_index /= len(dataset)
+    logging.info('graphs {}, avg_nodes {:.4f}, avg_edge_index {:.4f}'.format(len(dataset), avg_nodes, avg_edge_index/2))
+    
     path = f'saved_model/{args.model}/{args.dataset}'
     file_name = f'{args.model}_{args.dataset}'
 
@@ -277,6 +307,16 @@ def pgib_main(args, device):
     pgib_args = load_pgib_args()
     dataset = get_dataset('dataset', args.dataset)
     
+    avg_nodes = 0.0
+    avg_edge_index = 0.0
+    for i in range(len(dataset)):
+        avg_nodes += dataset[i].x.shape[0]
+        avg_edge_index += dataset[i].edge_index.shape[1]
+
+    avg_nodes /= len(dataset)
+    avg_edge_index /= len(dataset)
+    logging.info('graphs {}, avg_nodes {:.4f}, avg_edge_index {:.4f}'.format(len(dataset), avg_nodes, avg_edge_index/2))
+    
     path = f'saved_model/{args.model}/{args.dataset}'
     file_name = f'{args.model}_{args.dataset}'
 
@@ -300,7 +340,6 @@ def pgib_main(args, device):
         val_loader = DataLoader(val, batch_size = 128, shuffle = False)
         test_loader = DataLoader(test, batch_size = 128, shuffle = False)
 
-        num_class = dataset.num_classes
         output_dim = int(dataset.num_classes)
         pgib = PGIBGIN(dataset.num_features, output_dim, pgib_args, cont = args.pgib_cont).to(device)
         criterion = torch.nn.CrossEntropyLoss()
