@@ -113,12 +113,12 @@ def gib_main(args, device):
         gib_optim_params_list.append(gib_optim_params)
         gib_disc_optim_params_list.append(gib_disc_optim_params)
 
-    best_idx = val_accs.index(max(val_accs))
+    # best_idx = val_accs.index(max(val_accs))
     checkpoints = {
-        'gib_params_dict': gib_params_list[best_idx],
-        'gib_disc_params_dict': gib_disc_params_list[best_idx],
-        'gib_optim_params_dict': gib_optim_params_list[best_idx],
-        'gib_disc_optim_params_dict': gib_disc_optim_params_list[best_idx]
+        'gib_params_dict': gib_params_list,
+        'gib_disc_params_dict': gib_disc_params_list,
+        'gib_optim_params_dict': gib_optim_params_list,
+        'gib_disc_optim_params_dict': gib_disc_optim_params_list
     }
     save_model(checkpoints, path, file_name)
     
@@ -199,11 +199,11 @@ def vgib_main(args, device):
         vgib_cls_params_list.append(vgib_cls_params)
         vgib_optim_params_list.append(vgib_optim_params)
     
-    best_idx = val_accs.index(max(val_accs))
+    # best_idx = val_accs.index(max(val_accs))
     checkpoints = {
-        'vgib_params_dict': vgib_params_list[best_idx],
-        'vgib_cls_params_dict': vgib_cls_params_list[best_idx],
-        'vgib_optim_params_dict': vgib_optim_params_list[best_idx]
+        'vgib_params_dict': vgib_params_list,
+        'vgib_cls_params_dict': vgib_cls_params_list,
+        'vgib_optim_params_dict': vgib_optim_params_list
     }
     save_model(checkpoints, path, file_name)
 
@@ -288,10 +288,10 @@ def gsat_main(args, device):
         gsat_params_list.append(gsat_params)
         gsat_optim_params_list.append(gsat_optim_params)
     
-    best_idx = val_accs.index(max(val_accs))
+    # best_idx = val_accs.index(max(val_accs))
     checkpoints = {
-        'gsat_params_dict': gsat_params_list[best_idx],
-        'gsat_optim_params_dict': gsat_optim_params_list[best_idx]
+        'gsat_params_dict': gsat_params_list,
+        'gsat_optim_params_dict': gsat_optim_params_list
     }
     save_model(checkpoints, path, file_name)
 
@@ -409,10 +409,10 @@ def pgib_main(args, device):
         pgib_params_list.append(pgib_params)
         pgib_optim_params_list.append(pgib_optim_params)
     
-    best_idx = val_accs.index(max(val_accs))
+    # best_idx = val_accs.index(max(val_accs))
     checkpoints = {
-        'gsat_params_dict': pgib_params_list[best_idx],
-        'gsat_optim_params_dict': pgib_optim_params_list[best_idx]
+        'gsat_params_dict': pgib_params_list,
+        'gsat_optim_params_dict': pgib_optim_params_list
     }
     save_model(checkpoints, path, file_name)
 
