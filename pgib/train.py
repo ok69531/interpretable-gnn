@@ -50,7 +50,7 @@ def pgib_train(model, optimizer, device, loader, criterion, epoch, args, cont):
         cls_loss = criterion(logits, batch.y)
         
         if cont:
-            prototypes_of_correct_class = torch.t(model.model.prototype_class_identity[:, batch.y]).to(device)
+            prototypes_of_correct_class = torch.t(model.model.prototype_class_identity.to(device)[:, batch.y])
             prototypes_of_wrong_class = 1 - prototypes_of_correct_class
             positive_sim_matrix = sim_matrix * prototypes_of_correct_class
             negative_sim_matrix = sim_matrix * prototypes_of_wrong_class
