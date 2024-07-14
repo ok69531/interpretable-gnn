@@ -12,18 +12,18 @@ from torch_geometric.data import DataLoader, DenseDataLoader as DenseLoader
 
 
 def warm_only(model):
-    for p in model.gnn_layers.parameters():
+    for p in model.model.gnn_layers.parameters():
         p.requires_grad = True
-    model.prototype_vectors.requires_grad = True
-    for p in model.last_layer.parameters():
+    model.model.prototype_vectors.requires_grad = True
+    for p in model.model.last_layer.parameters():
         p.requires_grad = False
 
 
 def joint(model):
-    for p in model.gnn_layers.parameters():
+    for p in model.model.gnn_layers.parameters():
         p.requires_grad = True
-    model.prototype_vectors.requires_grad = True
-    for p in model.last_layer.parameters():
+    model.model.prototype_vectors.requires_grad = True
+    for p in model.model.last_layer.parameters():
         p.requires_grad = True
 
 
@@ -50,7 +50,7 @@ def pgib_train(model, optimizer, device, loader, criterion, epoch, args, cont):
         cls_loss = criterion(logits, batch.y)
         
         if cont:
-            prototypes_of_correct_class = torch.t(model.prototype_class_identity[:, batch.y]).to(device)
+            prototypes_of_correct_class = torch.t(model.model.prototype_class_identity[:, batch.y]).to(device)
             prototypes_of_wrong_class = 1 - prototypes_of_correct_class
             positive_sim_matrix = sim_matrix * prototypes_of_correct_class
             negative_sim_matrix = sim_matrix * prototypes_of_wrong_class
@@ -59,15 +59,15 @@ def pgib_train(model, optimizer, device, loader, criterion, epoch, args, cont):
             contrastive_loss = - torch.log(contrastive_loss).mean()
         
         prototype_numbers = []
-        for i in range(model.prototype_class_identity.shape[1]):
-            prototype_numbers.append(int(torch.count_nonzero(model.prototype_class_identity[:, i])))
+        for i in range(model.model.prototype_class_identity.shape[1]):
+            prototype_numbers.append(int(torch.count_nonzero(model.model.prototype_class_identity[:, i])))
         prototype_numbers = accumulate(prototype_numbers)
         
         n = 0
         ld = 0
         
         for k in prototype_numbers:
-            p = model.prototype_vectors[n:k]
+            p = model.model.prototype_vectors[n:k]
             n = k
             p = F.normalize(p, p = 2, dim = 1)
             matrix1 = torch.mm(p, torch.t(p)) - torch.eye(p.shape[0]).to(device) - 0.3
@@ -82,7 +82,7 @@ def pgib_train(model, optimizer, device, loader, criterion, epoch, args, cont):
         # optimization
         optimizer.zero_grad()
         loss.backward()
-        nn.utils.clip_grad_value_(model.parameters(), clip_value = 2.0)
+        nn.utils.clip_grad_value_(model.model.parameters(), clip_value = 2.0)
         optimizer.step()
         
         # reocrd

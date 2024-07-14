@@ -40,13 +40,13 @@ def join_prototypes_by_activations(model, p, test_loader, device, cont):
         if (proto_distanses <= k).any(): 
             to_join = np.argwhere(proto_distanses <= k)[:, 0] 
             
-            model.last_layer.weight.data[:, dist_iterator] = \
-                model.last_layer.weight.data[:, [dist_iterator, *to_join]].sum(1) 
+            model.model.last_layer.weight.data[:, dist_iterator] = \
+                model.model.last_layer.weight.data[:, [dist_iterator, *to_join]].sum(1) 
 
             if cont == False:
                 # prototype_predictor 
-                dim = model.prototype_predictor.weight.data.shape[1]
-                q_theta = model.prototype_predictor.weight.data.reshape(-1, dim , dim)
+                dim = model.model.prototype_predictor.weight.data.shape[1]
+                q_theta = model.model.prototype_predictor.weight.data.reshape(-1, dim , dim)
 
                 for i in range(len(to_join)): 
                     reindex_to_join = index_dic[to_join[i]]
@@ -62,29 +62,29 @@ def join_prototypes_by_activations(model, p, test_loader, device, cont):
 
                     result = result.reshape(dim, -1)
 
-                    model.prototype_predictor.weight = torch.nn.Parameter(torch.t(result))
+                    model.model.prototype_predictor.weight = torch.nn.Parameter(torch.t(result))
             
-            model.prototype_class_identity[dist_iterator] = \
-                model.prototype_class_identity[[dist_iterator, *to_join], :].max(0)[0] 
+            model.model.prototype_class_identity[dist_iterator] = \
+                model.model.prototype_class_identity[[dist_iterator, *to_join], :].max(0)[0] 
 
 
-            left_proto = np.setdiff1d(np.arange(model.last_layer.weight.data.shape[1]-model_args.latent_dim[2]), to_join) 
+            left_proto = np.setdiff1d(np.arange(model.model.last_layer.weight.data.shape[1]-model_args.latent_dim[2]), to_join) 
             joined = protos_[to_join] 
             protos_ = protos_[left_proto] 
             proto_joined.append([dist_iterator, joined]) 
             with torch.no_grad():
-                last_layer = np.arange(model.last_layer.weight.data.shape[1])
+                last_layer = np.arange(model.model.last_layer.weight.data.shape[1])
                 left_last_layer = np.concatenate((left_proto, last_layer[-model_args.latent_dim[2]:]))
-                model.last_layer.weight = torch.nn.Parameter(model.last_layer.weight[:, left_last_layer])
-                model.prototype_class_identity = model.prototype_class_identity[left_proto]
-                model.prototype_vectors = torch.nn.Parameter(model.prototype_vectors[left_proto])
+                model.model.last_layer.weight = torch.nn.Parameter(model.model.last_layer.weight[:, left_last_layer])
+                model.model.prototype_class_identity = model.model.prototype_class_identity[left_proto]
+                model.model.prototype_vectors = torch.nn.Parameter(model.model.prototype_vectors[left_proto])
                 distances = distances[np.ix_(left_proto, left_proto)] 
 
             no_of_prototypes = len(left_proto) 
         dist_iterator += 1
 
-    model.num_prototypes = no_of_prototypes
-    model.prototype_shape = model.prototype_vectors.shape
+    model.model.num_prototypes = no_of_prototypes
+    model.model.prototype_shape = model.model.prototype_vectors.shape
     print(f"prototypes after join: {no_of_prototypes}")
     return proto_joined
 

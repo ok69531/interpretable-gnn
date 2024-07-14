@@ -14,3 +14,4 @@ SLURM*
 dataset
 saved_model
 tmp.py
+plotting.py

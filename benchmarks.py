@@ -29,7 +29,7 @@ from gsat.train import run_one_epoch
 
 # PGIB
 from pgib.arguments import load_pgib_args
-from pgib.model import PGIBGIN
+from pgib.model import GnnNets
 from pgib.train import pgib_train, pgib_evaluate_GC, pgib_test_GC
 from pgib.my_mcts import mcts
 from pgib.proto_join import join_prototypes_by_activations
@@ -115,10 +115,10 @@ def gib_main(args, device):
 
     # best_idx = val_accs.index(max(val_accs))
     checkpoints = {
-        'gib_params_dict': gib_params_list,
-        'gib_disc_params_dict': gib_disc_params_list,
-        'gib_optim_params_dict': gib_optim_params_list,
-        'gib_disc_optim_params_dict': gib_disc_optim_params_list
+        'params_dict': gib_params_list,
+        'disc_params_dict': gib_disc_params_list,
+        'optim_params_dict': gib_optim_params_list,
+        'disc_optim_params_dict': gib_disc_optim_params_list
     }
     save_model(checkpoints, path, file_name)
     
@@ -201,9 +201,9 @@ def vgib_main(args, device):
     
     # best_idx = val_accs.index(max(val_accs))
     checkpoints = {
-        'vgib_params_dict': vgib_params_list,
-        'vgib_cls_params_dict': vgib_cls_params_list,
-        'vgib_optim_params_dict': vgib_optim_params_list
+        'params_dict': vgib_params_list,
+        'cls_params_dict': vgib_cls_params_list,
+        'optim_params_dict': vgib_optim_params_list
     }
     save_model(checkpoints, path, file_name)
 
@@ -290,8 +290,8 @@ def gsat_main(args, device):
     
     # best_idx = val_accs.index(max(val_accs))
     checkpoints = {
-        'gsat_params_dict': gsat_params_list,
-        'gsat_optim_params_dict': gsat_optim_params_list
+        'params_dict': gsat_params_list,
+        'optim_params_dict': gsat_optim_params_list
     }
     save_model(checkpoints, path, file_name)
 
@@ -341,7 +341,7 @@ def pgib_main(args, device):
         test_loader = DataLoader(test, batch_size = 128, shuffle = False)
 
         output_dim = int(dataset.num_classes)
-        pgib = PGIBGIN(dataset.num_features, output_dim, pgib_args, cont = args.pgib_cont).to(device)
+        pgib = GnnNets(dataset.num_features, output_dim, pgib_args, cont = args.pgib_cont).to(device)
         criterion = torch.nn.CrossEntropyLoss()
         optimizer = torch.optim.Adam(pgib.parameters(), lr = pgib_args.lr, weight_decay = pgib_args.weight_decay)
 
@@ -351,31 +351,31 @@ def pgib_main(args, device):
             if epoch >= pgib_args.proj_epochs and epoch % 50 == 0:
                 pgib.eval()
                 
-                for i in range(pgib.prototype_vectors.shape[0]):
+                for i in range(pgib.model.prototype_vectors.shape[0]):
                     count = 0
                     best_similarity = 0
-                    label = pgib.prototype_class_identity[0].max(0)[1]
+                    label = pgib.model.prototype_class_identity[0].max(0)[1]
                     # label = model.prototype_class_identity[i].max(0)[1]
                     
                     for j in range(i*10, len(train.indices)):
                         data = dataset[train.indices[j]]
                         if data.y == label:
                             count += 1
-                            coalition, similarity, prot = mcts(data, pgib, pgib.prototype_vectors[i])
+                            coalition, similarity, prot = mcts(data, pgib, pgib.model.prototype_vectors[i])
                             pgib.to(device)
                             if similarity > best_similarity:
                                 best_similarity = similarity
                                 proj_prot = prot
                         
                         if count >= pgib_args.count:
-                            pgib.prototype_vectors.data[i] = proj_prot.to(device)
+                            pgib.model.prototype_vectors.data[i] = proj_prot.to(device)
                             logging.info('Projection of prototype completed')
                             break
 
                 # prototype merge
                 share = True
                 if pgib_args.share: 
-                    if pgib.prototype_vectors.shape[0] > round(output_dim * pgib_args.num_prototypes_per_class * (1-pgib_args.merge_p)) :  
+                    if pgib.model.prototype_vectors.shape[0] > round(output_dim * pgib_args.num_prototypes_per_class * (1-pgib_args.merge_p)) :  
                         join_info = join_prototypes_by_activations(pgib, pgib_args.proto_percnetile, train_loader, device, cont = args.pgib_cont)
 
             train_loss, _, _ = pgib_train(pgib, optimizer, device, train_loader, criterion, epoch, pgib_args, cont = args.pgib_cont)
@@ -411,8 +411,8 @@ def pgib_main(args, device):
     
     # best_idx = val_accs.index(max(val_accs))
     checkpoints = {
-        'gsat_params_dict': pgib_params_list,
-        'gsat_optim_params_dict': pgib_optim_params_list
+        'params_dict': pgib_params_list,
+        'optim_params_dict': pgib_optim_params_list
     }
     save_model(checkpoints, path, file_name)
 
