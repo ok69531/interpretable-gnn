@@ -9,7 +9,7 @@ import rdkit.Chem as Chem
 import torch
 from torch_geometric.utils import dense_to_sparse
 from torch_geometric.data import Data, InMemoryDataset
-from torch_geometric.datasets import TUDataset
+from torch_geometric.datasets import TUDataset, MNISTSuperpixels
 
 from .feature_expansion import FeatureExpander
 
@@ -29,6 +29,8 @@ def get_dataset(root, dataset_name):
         return InterpretDataset(root, dataset_name)
     elif dataset_name in syn_names:
         return BA2MotifDataset(root, dataset_name)
+    elif dataset_name == 'MNIST':
+        return MNISTSuperpixels(os.path.join(root, 'MNIST'), train = False)
 
 
 # ----------------------- Interpretation Data ----------------------- #
