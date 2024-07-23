@@ -59,7 +59,7 @@ class VariationalGIB(nn.Module):
 
         # num_nodes = node_features_2.size()[0]
         node_feature = node_features_2
-        all_adj = to_dense_adj(edges)[0]
+        all_adj = to_dense_adj(edges, max_num_nodes = len(batch))[0]
 
         all_kl_loss = 0
         all_pos_penalty = 0

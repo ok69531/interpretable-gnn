@@ -59,7 +59,7 @@ class GIBGIN(nn.Module):
         max_id = torch.max(batch)
         EYE = torch.ones(2).to(edge_index.device)
         
-        all_adj = to_dense_adj(edge_index)[0]
+        all_adj = to_dense_adj(edge_index, max_num_nodes = len(batch))[0]
 
         all_con_penalty = 0
         all_sub_embedding = []
