@@ -15,7 +15,7 @@ from .feature_expansion import FeatureExpander
 
 
 def get_dataset(root, dataset_name):
-    tud_names = ['MUTAG', 'PROTEINS', 'DD', 'NCI1', 'IMDB-BINARY', 'IMDB-MULTI']
+    tud_names = ['MUTAG', 'Mutagenicity', 'PROTEINS', 'DD', 'NCI1', 'IMDB-BINARY', 'IMDB-MULTI']
     interpret_names = ['QED', 'DRD2', 'HLM', 'RLM', 'MLM']
     syn_names = ['BA-2motif']
     
