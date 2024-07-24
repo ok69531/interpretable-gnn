@@ -15,16 +15,16 @@ from .feature_expansion import FeatureExpander
 
 
 def get_dataset(root, dataset_name):
-    tud_names = ['MUTAG', 'Mutagenicity', 'PROTEINS', 'DD', 'NCI1', 'IMDB-BINARY', 'IMDB-MULTI']
+    tud_names = ['MUTAG', 'Mutagenicity', 'PROTEINS', 'DD', 'NCI1']
+    tud_feat_expand_names = ['IMDB-BINARY', 'IMDB-MULTI', 'COLLAB']
     interpret_names = ['QED', 'DRD2', 'HLM', 'RLM', 'MLM']
     syn_names = ['BA-2motif']
     
     if dataset_name in tud_names:
-        if 'IMDB' in dataset_name:
-            pre_transform = FeatureExpander().transform
-            return TUDataset(root, dataset_name, pre_transform = pre_transform)
-        else:
-            return TUDataset(root, dataset_name)
+        return TUDataset(root, dataset_name)
+    elif dataset_name in tud_feat_expand_names:
+        pre_transform = FeatureExpander().transform
+        return TUDataset(root, dataset_name, pre_transform = pre_transform)
     elif dataset_name in interpret_names:
         return InterpretDataset(root, dataset_name)
     elif dataset_name in syn_names:
